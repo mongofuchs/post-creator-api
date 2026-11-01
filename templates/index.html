@@ -1,0 +1,454 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-Creator KI - Multi-Theme</title>
+    <!-- Google Fonts für verschiedene Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fira+Code:wght@400;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- STANDARD / NEUTRAL THEME --- */
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --accent: #007bff;
+            --accent-hover: #0056b3;
+            --text-main: #333333;
+            --text-muted: #555555;
+            --border-color: #cccccc;
+            --input-bg: #ffffff;
+            --font-main: 'Roboto', sans-serif;
+            --heading-font: 'Roboto', sans-serif;
+            --box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --result-bg: #eef2f5;
+        }
+
+        /* --- METAL STAGE THEME --- */
+        body.theme-metal {
+            --bg-color: #0b0b0b;
+            --container-bg: #141414;
+            --accent: #ff1e1e;
+            --accent-hover: #ff4d4d;
+            --text-main: #f0f0f0;
+            --text-muted: #a0a0a0;
+            --border-color: #333333;
+            --input-bg: #1f1f1f;
+            --font-main: 'Roboto', sans-serif;
+            --heading-font: 'Bebas Neue', sans-serif;
+            --box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(255, 30, 30, 0.3);
+            --result-bg: #111111;
+        }
+
+        /* --- CLAUDE CODE / TECH THEME --- */
+        body.theme-claude {
+            --bg-color: #121212;
+            --container-bg: #18181b;
+            --accent: #d97706;
+            --accent-hover: #b45309;
+            --text-main: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --border-color: #27272a;
+            --input-bg: #09090b;
+            --font-main: 'Fira Code', monospace;
+            --heading-font: 'Fira Code', monospace;
+            --box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            --result-bg: #09090b;
+        }
+
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 20px; 
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .container { 
+            max-width: 700px; 
+            margin: 0 auto; 
+            background: var(--container-bg); 
+            padding: 25px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color);
+            box-shadow: var(--box-shadow); 
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        /* Theme-Switcher oben rechts */
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .theme-btn {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 5px 10px;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 !important;
+            width: auto !important;
+            font-family: var(--font-main);
+            transition: all 0.2s;
+        }
+
+        .theme-btn:hover, .theme-btn.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        h1 { 
+            font-family: var(--heading-font);
+            letter-spacing: 1px;
+            margin-top: 0; 
+            color: var(--text-main); 
+            font-size: 32px; 
+        }
+
+        label { 
+            font-family: var(--heading-font);
+            font-size: 15px;
+            margin-top: 20px; 
+            display: block; 
+            color: var(--text-muted); 
+        }
+
+        input, select, textarea { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 6px; 
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color); 
+            color: var(--text-main);
+            border-radius: 6px; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            font-family: var(--font-main);
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        button.action-btn { 
+            font-family: var(--heading-font);
+            font-size: 16px;
+            width: 100%; 
+            padding: 14px; 
+            background: var(--accent);
+            color: white; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 6px;
+            cursor: pointer; 
+            margin-top: 25px; 
+            transition: background 0.2s;
+        }
+
+        button.action-btn:hover { 
+            background: var(--accent-hover);
+        }
+
+        button.action-btn:disabled { 
+            opacity: 0.5;
+            cursor: not-allowed; 
+        }
+
+        .settings-box {
+            margin-top: 25px;
+            padding: 15px;
+            background: var(--input-bg);
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+        }
+
+        .settings-box label {
+            margin-top: 0;
+            font-size: 13px;
+        }
+
+        .result-box { 
+            margin-top: 30px; 
+            padding: 20px; 
+            background: var(--result-bg); 
+            border-left: 5px solid var(--accent); 
+            border-radius: 4px; 
+            border: 1px solid var(--border-color);
+        }
+
+        .result-box h3 {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        .result-box pre { 
+            white-space: pre-wrap; 
+            font-family: var(--font-main); 
+            color: var(--text-main);
+            margin: 0; 
+            min-height: 60px; 
+            line-height: 1.5;
+        }
+
+        .loading { 
+            text-align: center; 
+            display: none; 
+            margin-top: 15px; 
+            color: var(--accent); 
+            font-weight: bold;
+            font-style: italic; 
+        }
+
+        .copy-btn { 
+            background: var(--input-bg); 
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            margin-top: 15px; 
+            padding: 8px 15px; 
+            font-size: 13px; 
+            width: auto; 
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .copy-btn:hover { 
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .ai-links-section { 
+            margin-top: 35px; 
+            border-top: 1px dashed var(--border-color); 
+            padding-top: 25px; 
+        }
+
+        .ai-links-section h3 {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            color: var(--text-main);
+            margin-top: 0;
+        }
+
+        .ai-button-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-top: 15px; 
+        }
+
+        .ai-link-btn { 
+            font-family: var(--heading-font);
+            font-size: 14px;
+            display: block; 
+            text-align: center; 
+            background-color: var(--input-bg); 
+            border: 1px solid var(--border-color);
+            color: var(--text-main); 
+            text-decoration: none; 
+            padding: 12px; 
+            border-radius: 6px; 
+            transition: all 0.2s; 
+        }
+
+        .ai-link-btn:hover { 
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body class="theme-metal">
+
+<div class="container">
+    <!-- Theme Switcher oben rechts -->
+    <div class="theme-switcher">
+        <button class="theme-btn" onclick="setTheme('neutral')">Neutral</button>
+        <button class="theme-btn active" onclick="setTheme('metal')" id="btn-metal">Metal</button>
+        <button class="theme-btn" onclick="setTheme('claude')">Claude</button>
+    </div>
+
+    <h1>⚡ Post-Creator</h1>
+    
+    <label for="topic">Thema / Keyword:</label>
+    <input type="text" id="topic" value="Heavy Metal Open Air Festival">
+
+    <label for="platform">Plattform:</label>
+    <select id="platform">
+        <option value="linkedin">LinkedIn (Professionell)</option>
+        <option value="instagram">Instagram (Visuell & Hashtags)</option>
+        <option value="twitter">X / Twitter (Kurz & Bündig)</option>
+    </select>
+
+    <label for="age_days">Zeitraum (Tage):</label>
+    <input type="number" id="age_days" value="14">
+
+    <button class="action-btn" id="generateBtn" onclick="generatePost()">Post Generieren 🚀</button>
+
+    <!-- Sicheres Einstellungsfeld für den API-Key -->
+    <div class="settings-box">
+        <label for="apiKeyInput">🔑 Groq API-Key (wird lokal auf dem Handy gespeichert):</label>
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <input type="password" id="apiKeyInput" placeholder="gsk_..." style="margin-top: 0;">
+            <button class="copy-btn" onclick="saveApiKey()" style="margin-top: 0; white-space: nowrap;">Speichern</button>
+        </div>
+    </div>
+
+    <div id="loading" class="loading">Generiere Inhalt über Cloud-KI... bitte warten... ⏳</div>
+
+    <!-- Ergebnis-Kasten -->
+    <div id="resultBox" class="result-box">
+        <h3>Generierter Beitrag:</h3>
+        <pre id="outputContent">Dein generierter Post erscheint hier...</pre>
+        <button class="copy-btn" onclick="copyToClipboard()">📋 Kopieren</button>
+    </div>
+
+    <!-- Externe Bild-KI Links -->
+    <div class="ai-links-section">
+        <h3>🎨 Kostenlose Bild-KIs</h3>
+        <p style="font-size: 13px; color: var(--text-muted);">Erstelle ein passendes Bild in einem neuen Tab:</p>
+        
+        <div class="ai-button-grid">
+            <a href="https://firefly.adobe.com/image" target="_blank" class="ai-link-btn">🔥 Adobe Firefly</a>
+            <a href="https://openart.ai/de/ai-image-generator" target="_blank" class="ai-link-btn">✨ OpenArt AI</a>
+            <a href="https://www.craiyon.com/de" target="_blank" class="ai-link-btn">🖍️ Craiyon</a>
+            <a href="https://notegpt.io/ai-image-generator" target="_blank" class="ai-link-btn">🤖 NoteGPT</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Beim Laden der App prüfen, ob ein Key im lokalen Speicher des Handys liegt
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('preferred_theme') || 'metal';
+    setTheme(savedTheme);
+
+    const savedKey = localStorage.getItem('groq_api_key');
+    if (savedKey) {
+        document.getElementById('apiKeyInput').value = savedKey;
+    }
+});
+
+// API-Key sicher lokal speichern
+function saveApiKey() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    if (!key.startsWith('gsk_')) {
+        alert("Das sieht nicht nach einem gültigen Groq API-Key aus (muss mit 'gsk_' beginnen).");
+        return;
+    }
+    localStorage.setItem('groq_api_key', key);
+    alert("API-Key sicher auf dem Gerät gespeichert!");
+}
+
+// Theme-Wechsler Logik
+function setTheme(themeName) {
+    const body = document.body;
+    body.className = ''; 
+    
+    if (themeName === 'metal') {
+        body.classList.add('theme-metal');
+    } else if (themeName === 'claude') {
+        body.classList.add('theme-claude');
+    } else {
+        body.classList.add('theme-neutral');
+    }
+
+    document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = Array.from(document.querySelectorAll('.theme-btn')).find(b => b.innerText.toLowerCase().includes(themeName));
+    if (activeBtn) activeBtn.classList.add('active');
+
+    localStorage.setItem('preferred_theme', themeName);
+}
+
+// 1. Post direkt über Cloud-API generieren
+async function generatePost() {
+    const topic = document.getElementById('topic').value;
+    const platform = document.getElementById('platform').value;
+    const apiKey = localStorage.getItem('groq_api_key') || document.getElementById('apiKeyInput').value.trim();
+
+    if (!topic) {
+        alert("Bitte gib ein Thema ein.");
+        return;
+    }
+
+    if (!apiKey) {
+        alert("Bitte trage zuerst deinen Groq API-Key ein und klicke auf 'Speichern'.");
+        return;
+    }
+
+    const btn = document.getElementById('generateBtn');
+    const loading = document.getElementById('loading');
+    const outputContent = document.getElementById('outputContent');
+
+    btn.disabled = true;
+    loading.style.display = 'block';
+    outputContent.innerText = "Generiere...";
+
+    const platformInstructions = {
+        linkedin: "Schreibe im professionellen, strukturierten Ton mit Absätzen und passenden Emojis. Füge am Ende 3-5 relevante Hashtags hinzu.",
+        instagram: "Schreibe locker und ansprechend. Nutze reichlich Emojis, gliedere mit Aufzählungspunkten und füge am Ende 10 relevante Hashtags an.",
+        twitter: "Schreibe einen prägnanten Tweet mit maximal 280 Zeichen, auf den Punkt gebracht, mit 2 passenden Hashtags."
+    };
+
+    const instruction = platformInstructions[platform.toLowerCase()] || platformInstructions["linkedin"];
+    const prompt = `Erstelle einen ansprechenden Social-Media-Beitrag für die Plattform '${platform.toUpperCase()}' zum Thema: '${topic}'.\nVorgaben für den Schreibstil: ${instruction}\nSchreibe den Beitrag direkt, ohne Erklärungen.`;
+
+    try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+                model: "llama-3.3-70b-versatile",
+                messages: [
+                    { role: "user", content: prompt }
+                ],
+                temperature: 0.7,
+                max_tokens: 500
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.choices && data.choices.length > 0) {
+            outputContent.innerText = data.choices[0].message.content.trim();
+        } else {
+            outputContent.innerText = "Fehler: " + (data.error?.message || "Unbekannter API-Fehler");
+        }
+    } catch (err) {
+        console.error("Netzwerkfehler:", err);
+        outputContent.innerText = "Verbindungsfehler zur KI-Cloud. Bitte Internetverbindung prüfen.";
+    } finally {
+        btn.disabled = false;
+        loading.style.display = 'none';
+    }
+}
+
+// 2. Text in Zwischenablage kopieren
+async function copyToClipboard() {
+    const textToCopy = document.getElementById('outputContent').innerText;
+    try {
+        await navigator.clipboard.writeText(textToCopy);
+        alert("Erfolgreich in die Zwischenablage kopiert!");
+    } catch (err) {
+        alert("Fehler beim Kopieren.");
+    }
+}
+</script>
+
+</body>
+</html>

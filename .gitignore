@@ -1,0 +1,11 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+.pytest_cache/
+node_modules/
+android/.gradle/
+android/build/
+android/app/build/
