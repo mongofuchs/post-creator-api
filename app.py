@@ -15,7 +15,7 @@ from generator import (
     get_text_provider,
 )
 from image_service import register_image_routes
-from media import search_batch
+from media import MediaSearchError, search_batch
 from research import fetch_google_trends
 
 # Logging konfigurieren
@@ -217,6 +217,19 @@ def api_media():
             image_queries=keywords,
             video_queries=keywords,
             topic=topic,
+        )
+    except MediaSearchError:
+        app.logger.exception("Alle Medienquellen sind fehlgeschlagen.")
+        return (
+            jsonify(
+                {
+                    "error": (
+                        "Die Mediensuche ist vorübergehend nicht erreichbar. "
+                        "Bitte später erneut versuchen."
+                    )
+                }
+            ),
+            502,
         )
     except Exception as exc:
         app.logger.exception("Medien-Suche fehlgeschlagen: %s", exc)
